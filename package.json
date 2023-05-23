@@ -1,8 +1,8 @@
 {
-  "name": "cachix-action",
+  "name": "attic-action",
   "version": "1.0.0",
   "private": true,
-  "description": "nix-build with the help of caching to Cachix",
+  "description": "nix-build with the help of caching to Attic",
   "main": "dist/main/index.js",
   "scripts": {
     "build": "tsc && ncc build -o dist/main src/main.ts",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cachix/cachix-action.git"
+    "url": "git+https://github.com/icewind1991/attic-action.git"
   },
   "keywords": [
     "actions",
     "node",
     "setup"
   ],
-  "author": "Domen Kožar",
+  "author": "Robin Appelman",
   "license": "ASL2",
   "dependencies": {
     "@actions/core": "^1.10.0",

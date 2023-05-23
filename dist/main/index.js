@@ -4292,44 +4292,45 @@ const which_1 = __importDefault(__nccwpck_require__(207));
 exports.IsPost = !!process.env['STATE_isPost'];
 // inputs
 const name = core.getInput('name', { required: true });
+const instance = core.getInput('instance', { required: true });
 const extraPullNames = core.getInput('extraPullNames');
-const signingKey = core.getInput('signingKey');
 const authToken = core.getInput('authToken');
 const skipPush = core.getInput('skipPush');
 const pathsToPush = core.getInput('pathsToPush');
 const pushFilter = core.getInput('pushFilter');
-const cachixArgs = core.getInput('cachixArgs');
+const atticArgs = core.getInput('atticArgs');
 const installCommand = core.getInput('installCommand') ||
-    "nix-env --quiet -j8 -iA cachix -f https://cachix.org/api/v1/install";
+    "nix-store -r /nix/store/0zplda5sjpr44lrgh47rrg67iv1f3bam-attic-0.1.0 --extra-substituters https://cache.icewind.me/attic-action --extra-trusted-public-keys attic-action:922cbVIJIubQvnF+ymBpFAbYjBHtD+yU4OHmNasqHhg=" +
+        "&& nix profile install github:zhaofengli/attic?rev=5f85e35a25085b75e1cbb6cc7291726fa4fab2ed#attic --extra-experimental-features 'nix-command flakes'";
 function setup() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            if (!which_1.default.sync('cachix', { nothrow: true })) {
-                core.startGroup('Cachix: installing');
+            if (!which_1.default.sync('attic', { nothrow: true })) {
+                core.startGroup('Attic: installing');
                 yield exec.exec('bash', ['-c', installCommand]);
                 core.endGroup();
             }
-            core.startGroup('Cachix: checking version');
-            yield exec.exec('cachix', ['--version']);
+            core.startGroup('Attic: checking version');
+            yield exec.exec('attic', ['--version']);
             core.endGroup();
             // for managed signing key and private caches
             if (authToken !== "") {
-                yield exec.exec('cachix', ['authtoken', authToken]);
+                yield exec.exec('attic', ['login', name, instance, authToken]);
             }
-            core.startGroup(`Cachix: using cache ` + name);
-            yield exec.exec('cachix', ['use', name]);
+            else {
+                yield exec.exec('attic', ['login', name, instance]);
+            }
+            core.startGroup(`Attic: using cache ` + name);
+            yield exec.exec('attic', ['use', name]);
             core.endGroup();
             if (extraPullNames != "") {
-                core.startGroup(`Cachix: using extra caches ` + extraPullNames);
+                core.startGroup(`Attic: using extra caches ` + extraPullNames);
                 const extraPullNameList = extraPullNames.split(',');
                 for (let itemName of extraPullNameList) {
                     const trimmedItemName = itemName.trim();
-                    yield exec.exec('cachix', ['use', trimmedItemName]);
+                    yield exec.exec('attic', ['use', trimmedItemName]);
                 }
                 core.endGroup();
-            }
-            if (signingKey !== "") {
-                core.exportVariable('CACHIX_SIGNING_KEY', signingKey);
             }
             // Remember existing store paths
             yield exec.exec("sh", ["-c", `${__dirname}/list-nix-store.sh > /tmp/store-path-pre-build`]);
@@ -4341,13 +4342,13 @@ function setup() {
 }
 function upload() {
     return __awaiter(this, void 0, void 0, function* () {
-        core.startGroup('Cachix: push');
+        core.startGroup('Attic: push');
         try {
             if (skipPush === 'true') {
                 core.info('Pushing is disabled as skipPush is set to true');
             }
-            else if (signingKey !== "" || authToken !== "") {
-                yield exec.exec(`${__dirname}/push-paths.sh`, ['cachix', cachixArgs, name, pathsToPush, pushFilter]);
+            else if (authToken !== "") {
+                yield exec.exec(`${__dirname}/push-paths.sh`, ['attic', atticArgs, name, pathsToPush, pushFilter]);
             }
             else {
                 core.info('Pushing is disabled as signingKey nor authToken are set (or are empty?) in your YAML file.');

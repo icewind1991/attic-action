@@ -1,26 +1,27 @@
-name: 'Cachix'
-description: 'nix-build with the help of caching to Cachix'
-author: 'Domen Kožar'
+name: 'Attic'
+description: 'nix-build with the help of caching to Attic'
+author: 'Robin Appelman'
 inputs:
   name:
-    description: 'Name of a cachix cache to push and pull/substitute'
+    description: 'Name of a attic cache to push and pull/substitute'
+    required: true
+  instance:
+    description: 'Url of a attic instance to push and pull/substitute'
     required: true
   extraPullNames:
-    description: 'Comma-separated list of names for extra cachix caches to pull/substitute'
+    description: 'Comma-separated list of names for extra attic caches to pull/substitute'
   authToken:
-    description: 'Authentication token for Cachix, needed for private cache access or to push using an Auth Token'
-  signingKey:
-    description: 'Signing key secret retrieved after creating binary cache on https://cachix.org'
+    description: 'Authentication token for Attic, needed for private cache access or to push using an Auth Token'
   skipPush:
     description: 'Set to true to disable pushing build results to the cache'
   pathsToPush:
     description: 'Whitespace-separated list of paths to push. Leave empty to push every build result.'
   pushFilter:
     description: 'Ignored if pathsToPush is set. Regular expression to exclude derivations for the cache push, for example "(-source$|nixpkgs\.tar\.gz$)". Warning: this filter does not guarantee it will not get pushed in case the path is part of the closure of something that will get pushed.'
-  cachixArgs:
-    description: 'Extra command-line arguments to pass to cachix. If empty, defaults to -j8'
+  atticArgs:
+    description: 'Extra command-line arguments to pass to attic. If empty, defaults to -j8'
   installCommand:
-    description: 'Override the default cachix installation method'
+    description: 'Override the default attic installation method'
 branding:
   color: 'blue'
   icon: 'database'
