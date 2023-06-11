@@ -15,9 +15,7 @@ const pushFilter = core.getInput('pushFilter');
 const atticArgs = core.getInput('atticArgs');
 
 const installCommand =
-  core.getInput('installCommand') ||
-  "nix-store -r /nix/store/0zplda5sjpr44lrgh47rrg67iv1f3bam-attic-0.1.0 --extra-substituters https://attic-action.cachix.org --extra-trusted-public-keys attic-action.cachix.org-1:3Iqcq1PU6FJmNWyfSMKcx2HIBei6fybMIgVBcHS5Uvc=" +
-    "&& nix profile install github:zhaofengli/attic?rev=5f85e35a25085b75e1cbb6cc7291726fa4fab2ed#attic --extra-experimental-features 'nix-command flakes'";
+  core.getInput('installCommand') || `${__dirname}/install-attic-ci.sh`;
 
 async function setup() {
   try {
