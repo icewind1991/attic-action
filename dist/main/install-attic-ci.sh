@@ -66,4 +66,4 @@ in
 
 EOF
 
-nix-env --substituters "https://staging.attic.rs/attic-ci https://cache.nixos.org" --trusted-public-keys "attic-ci:U5Sey4mUxwBXM3iFapmP0/ogODXywKLRNgRPQpEXxbo= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" -if "$expr"
+nix-env --substituters "https://attic-action.cachix.org https://staging.attic.rs/attic-ci https://cache.nixos.org" --trusted-public-keys "attic-action.cachix.org-1:3Iqcq1PU6FJmNWyfSMKcx2HIBei6fybMIgVBcHS5Uvc= attic-ci:U5Sey4mUxwBXM3iFapmP0/ogODXywKLRNgRPQpEXxbo= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" -if "$expr"
