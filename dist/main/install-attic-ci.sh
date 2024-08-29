@@ -6,6 +6,7 @@ cleanup() {
   rm -f "$expr"
 }
 
+
 cat >"$expr" <<'EOF'
   { system ? builtins.currentSystem }:
 let
@@ -25,7 +26,6 @@ let
           value = common // {
             inherit outputName;
             outPath = maybeStorePath (builtins.getAttr outputName outputs);
-            drvPath = maybeStorePath (builtins.getAttr outputName outputs);
           };
         };
       outputsList = map outputToAttrListElement outputNames;

@@ -7,7 +7,7 @@ on:
 
 jobs:
   public-cache:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - run: yarn install --frozen-lockfile
@@ -24,7 +24,7 @@ jobs:
     - run: nix-build test.nix
 
   public-cache-no-key:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - run: yarn install --frozen-lockfile
@@ -38,7 +38,7 @@ jobs:
     - run: nix-build test.nix
 
   private-cache:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - run: yarn install --frozen-lockfile
@@ -53,13 +53,13 @@ jobs:
     - run: nix-build test.nix
 
   nix-master:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Install Nix
       uses: cachix/install-nix-action@v20
       with: 
-        nix_path: nixpkgs=channel:nixos-22.11
+        nix_path: nixpkgs=channel:nixos-24.05
         install_url: https://nixos-nix-install-tests.cachix.org/serve/kkq45x7yrzvxq8627fi6hkswnfa7mg2l/install
         install_options: '--tarball-url-prefix https://nixos-nix-install-tests.cachix.org/serve'
     - run: yarn install --frozen-lockfile
